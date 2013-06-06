@@ -1,27 +1,135 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <title>#twitlyfe</title>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="underscore.js"></script>
+
+    <!-- HTML5 logo favicon -->
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAy8vLAAEDAAAROkkABAAAAAACBgAFAwAAIVJsALOliAAFAwkAT/T3AJTK/wAcTewAsOzvAB5I7wAfTuYA0LeiAHr6/wAnU+MAJ1HmABtHVQDHgAAA6+b3AMh9CQDm9/QA3d3dACNMWwArVfsA+e3oAO/w+gB+dHYAAAABAPLz8QA8X28ALmbmAPP09AAAAgcABAABAPT09ADg3eYABQABAEvy+wBNeY8AAQIQAAcACgD3+foAAAsQAOHn8gA8a+wA/f39AF/1+wAsUecAYfX7ADBfcAAkRlMA7+/vAL2yngDu8/IAbPT4AMC0mwDKysoAAAACAAEAAgArY/AAAAUIAAMEBQCJfmgAxLunALamjQD8/PsA+v3+AKjK7wAzWmsAau/zAO/o9gAGPUwAOv36AKfY/gAAAAMAxNXIAAACAADDtJwAAQMDADJp6AAJAgkABAUSACRO4AATSFIAvKWLAJF+aQD8/PwA/vz8AKWafQAgUfsAm5ubACFEWAApT/UAv+/yAOzu7gCj1PwAvbCaACBf+ADv8/QAAAAEALHS/wAGAAQABgIBAC5q7AAHAgEAHk3eAPf39wDN9/gAmc3xAAcHBwDp6ekAGUdZAJOEagAdS1MAL0ztAC1U6gC4s6QANU3nAAACAgCwn40AttfrABVN6AAtYfYAsqGKAAQCAgAHAAUAn87jAFd3jQC7pocA+fv7APv7+wCmvP4AJUzuANbW1gCampoA3vb/ANr//wAkR1EAv7KZAKyihQCas/YAAAEAAAAEAAAAAAYAAAUDAAQBAACupogAHUfgAAUBAAAACgAABwEAAAEECQAHBAAA8/v8ACJI7AD4+/wAzfv9ABhBUgAsReMA/vr5ACNR7ADm5PcAGEZYAB1EUgD///8ALE7sAGH2+gAoY/UA9/DuAAEBAQCwooYAAwIEAAAIBAAwYvIAGkjtAOPj4wAJBQQAHU/nAAgJBwAVRFMAH2FzAAwIBAD++P0AJVPhAP77/QDV1dUApKCBAGLz+wAfRFwAZfX4ABgLDQApVP8ARniKAMK1mwDv9/IAAAECAAMBAgC2oYQABwECAJqQfwDf6vAA5urnAP7+/gDg8vYA//7+AChU5QCdh24AwvX3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqDFyiQAqB3M+X06IJBlaqKg8XooAoaaNyrASXW2ST6gxAYpeAIM1Hpl5DH6rMFDOqM6zvQC+0lnDh8wYJ2XRZ6jOMaitxLi/YH27a4sipJOoqIZxrVgQf56sSs0ckA+Tzm6bdEI7OMu1pVaxP1MbkzeTfENkUZUoEy8WHWbPopMJp0jHtrkLgrIzqQ52d5cfVzaTugCdFWhNFy1jJWmBAMg9xiMAr4AhVZxBwFSfRs5bqJTCdbcDSQpLFBooeryo0ECgKxHBOqoyNClMLHAAqJFhb5p4j5YIhMlcewJHDa2t01IgtI7Fxa6uRAaFLoytqAWjYiZsbGpqmASoOUUAqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" rel="icon" type="image/x-icon" />    
+    <style>
+      * { margin: 0; padding: 0; }
+      
+      /* page background; scales to window size, possibly in any browser */
+      html { 
+        background: url(images/Shanghai-in-the-morning.jpg) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }
+      
+      #page-wrap { width: 400px; margin: 50px auto; padding: 20px; background: white; -moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black; }
+      p { font: 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
+
+      .wrapper { 
+        background: url(images/banner.png) no-repeat center center fixed; /*  this sets the div background as an image */
+        margin: 0px auto; /* this centers the div */
+        padding-top: 20px; /* this "pads" the div 20px on the top */
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }
+
+      /* ul text styling */
+      ul {
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        line-height: 2em;
+        color: rgb(125,234,124); 
+        background: rgb(54, 25, 25); /* Fall-back for browsers that don't support rgba */
+        background: rgba(54, 25, 25, .5);
+        text-indent: 5px;
+        list-style-position: inside;
+        padding: 6px;
+        margin: 2px;
+      }
+
+
+    </style>
   </head>
   <body>
+    
+  <header>
+    <div class="wrapper">
+
+      <hgroup>
+        <h1 style="color:blanchedalmond; text-align:center">[ Twittler ]</h1>
+      </hgroup>
+
+  <!--username field-->
+      <fieldset class="textbox">
+        <label class="username">
+          <span style="color:white">@twittlehandle</span>
+          <input class="username-field" type="text" id="username">
+          <button class="log in" id="usernamebutton">log in</button>
+        </label>
+      </fieldset>
+
+    </div>
+  </header>
+
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        var latestMsg = new Date(), newTweets, firstRun=true;
+        var $ul = $('ul');
+        $ul.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+        var lastIndex=-1, tempIndex, index;
+        setInterval(function(){
+          index = streams.home.length - 1;
+          while(index > lastIndex){
+            tempIndex=lastIndex;
+            var tweet = streams.home[index];
+            var $tweet = $('<li></li>');
+            if (firstRun || tweet.created_at > latestMsg){
+              $tweet.text('['+tweet.created_at+']' + ' @' + tweet.user + ': ' + tweet.message);
+              $tweet.appendTo($ul);
+
+              tempIndex++;
+              latestMsg=tweet.created_at;
+            };
+            index--;
+          };
+          firstRun = false;
+          lastIndex=tempIndex;
+        }, 1500);
+
+       // setInterval(function() {
+        //  var collect = streams.home;
+         // newTweets = _.filter(streams.home, function(){
+          //    return streams.home.created_at>latestMsg;
+          //});
+
+        //}, 1500);
+
+        //submit tweets
+        $(function() {     
+          $( '#sendbutton' ).click(function(){  
+            send($( '#textbox' ).val()); 
+            index++;        
+            $( '#textbox' ).val(""); 
+          });
+        });
+
+        //assign username
+        $(function() {     
+          $( '#usernamebutton' ).click(function(){  
+            send($( '#username' ).val()); 
+          });
+        });
 
       });
 
     </script>
+    <h2 style="color:antiquewhite">Mr. Twittles' Twittling Twits</h2>
+    <input class="draft" type="text" id="textbox"/> 
+    <button class="send" id="sendbutton" >send</button>
+    <ul class="messages" type=none></ul>               
+
   </body>
 </html>
