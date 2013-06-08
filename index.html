@@ -88,7 +88,12 @@
             var tweet = streams.home[index];
             var $tweet = $('<li></li>');
             if (firstRun || tweet.created_at > latestMsg){
-              $tweet.text('['+tweet.created_at+']' + ' @' + tweet.user + ': ' + tweet.message);
+              // regex, remove timezone info
+              // 10 chars, paren, capture[ anynotparen ]repeated, paren
+              var re = /.{10}\(([^()]+)\)/g;
+              var timestamp = String(tweet.created_at);
+              timestamp = timestamp.replace(re, "");
+              $tweet.text('['+timestamp+']' + ' @' + tweet.user + ': ' + tweet.message);
               $tweet.appendTo($ul);
 
               tempIndex++;
@@ -100,27 +105,13 @@
           lastIndex=tempIndex;
         }, 1500);
 
-       // setInterval(function() {
-        //  var collect = streams.home;
-         // newTweets = _.filter(streams.home, function(){
-          //    return streams.home.created_at>latestMsg;
-          //});
-
-        //}, 1500);
-
         //submit tweets
-        $(function() {     
+        $(function() {
           $( '#sendbutton' ).click(function(){
-            window.visitor = ($( '#username' ).val());  
+            window.visitor = ($( '#username' ).val());
+            if (!streams.users[window.visitor]){ streams.users[window.visitor] = []; };
             writeTweet($( '#textbox' ).val());
             $( '#textbox' ).val(""); 
-          });
-        });
-
-        //assign username
-        $(function() {     
-          $( '#usernamebutton' ).click(function(){  
-            window.visitor = ($( '#username' ).val()); 
           });
         });
 
