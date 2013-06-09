@@ -95,7 +95,6 @@
               timestamp = timestamp.replace(re, "");
               $tweet.text('['+timestamp+']' + ' @' + tweet.user + ': ' + tweet.message);
               $tweet.appendTo($ul);
-
               tempIndex++;
               latestMsg=tweet.created_at;
             };
@@ -103,6 +102,9 @@
           };
           firstRun = false;
           lastIndex=tempIndex;
+          $('#tweets li').attr('id', function(i) {
+            return 'tweet'+(i+1);
+          });
         }, 1500);
 
         //submit tweets
@@ -121,7 +123,7 @@
     <h2 style="color:antiquewhite">Mr. Twittles' Twittling Twits</h2>
     <input class="draft" type="text" id="textbox"/> 
     <button class="send" id="sendbutton" >send</button>
-    <ul class="messages" type=none></ul>               
+    <ul class="messages" id="tweets" type=none></ul>               
 
   </body>
 </html>
