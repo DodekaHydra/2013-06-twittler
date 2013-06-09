@@ -6,6 +6,9 @@
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
     <script src="underscore.js"></script>
+    <!-- moment and livestamp for human friendly timestamps-->
+    <script src="moment.min.js"></script>
+    <script src="livestamp.min.js"></script>
 
     <!-- HTML5 logo favicon -->
     <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAAy8vLAAEDAAAROkkABAAAAAACBgAFAwAAIVJsALOliAAFAwkAT/T3AJTK/wAcTewAsOzvAB5I7wAfTuYA0LeiAHr6/wAnU+MAJ1HmABtHVQDHgAAA6+b3AMh9CQDm9/QA3d3dACNMWwArVfsA+e3oAO/w+gB+dHYAAAABAPLz8QA8X28ALmbmAPP09AAAAgcABAABAPT09ADg3eYABQABAEvy+wBNeY8AAQIQAAcACgD3+foAAAsQAOHn8gA8a+wA/f39AF/1+wAsUecAYfX7ADBfcAAkRlMA7+/vAL2yngDu8/IAbPT4AMC0mwDKysoAAAACAAEAAgArY/AAAAUIAAMEBQCJfmgAxLunALamjQD8/PsA+v3+AKjK7wAzWmsAau/zAO/o9gAGPUwAOv36AKfY/gAAAAMAxNXIAAACAADDtJwAAQMDADJp6AAJAgkABAUSACRO4AATSFIAvKWLAJF+aQD8/PwA/vz8AKWafQAgUfsAm5ubACFEWAApT/UAv+/yAOzu7gCj1PwAvbCaACBf+ADv8/QAAAAEALHS/wAGAAQABgIBAC5q7AAHAgEAHk3eAPf39wDN9/gAmc3xAAcHBwDp6ekAGUdZAJOEagAdS1MAL0ztAC1U6gC4s6QANU3nAAACAgCwn40AttfrABVN6AAtYfYAsqGKAAQCAgAHAAUAn87jAFd3jQC7pocA+fv7APv7+wCmvP4AJUzuANbW1gCampoA3vb/ANr//wAkR1EAv7KZAKyihQCas/YAAAEAAAAEAAAAAAYAAAUDAAQBAACupogAHUfgAAUBAAAACgAABwEAAAEECQAHBAAA8/v8ACJI7AD4+/wAzfv9ABhBUgAsReMA/vr5ACNR7ADm5PcAGEZYAB1EUgD///8ALE7sAGH2+gAoY/UA9/DuAAEBAQCwooYAAwIEAAAIBAAwYvIAGkjtAOPj4wAJBQQAHU/nAAgJBwAVRFMAH2FzAAwIBAD++P0AJVPhAP77/QDV1dUApKCBAGLz+wAfRFwAZfX4ABgLDQApVP8ARniKAMK1mwDv9/IAAAECAAMBAgC2oYQABwECAJqQfwDf6vAA5urnAP7+/gDg8vYA//7+AChU5QCdh24AwvX3AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAqDFyiQAqB3M+X06IJBlaqKg8XooAoaaNyrASXW2ST6gxAYpeAIM1Hpl5DH6rMFDOqM6zvQC+0lnDh8wYJ2XRZ6jOMaitxLi/YH27a4sipJOoqIZxrVgQf56sSs0ckA+Tzm6bdEI7OMu1pVaxP1MbkzeTfENkUZUoEy8WHWbPopMJp0jHtrkLgrIzqQ52d5cfVzaTugCdFWhNFy1jJWmBAMg9xiMAr4AhVZxBwFSfRs5bqJTCdbcDSQpLFBooeryo0ECgKxHBOqoyNClMLHAAqJFhb5p4j5YIhMlcewJHDa2t01IgtI7Fxa6uRAaFLoytqAWjYiZsbGpqmASoOUUAqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" rel="icon" type="image/x-icon" />    
@@ -76,8 +79,10 @@
     <script>
 
       $(document).ready(function(){
+
         var latestMsg = new Date(), newTweets, firstRun=true;
         var $dl = $('dl');
+        var $dt = $('dt');
         $dl.html('');
 
         var lastIndex=-1, tempIndex, index;
@@ -86,28 +91,31 @@
           while(index > lastIndex){
             tempIndex=lastIndex;
             var tweet = streams.home[index];
-            var $user = $('<dt></dt>');
+            var $timestamp = $('<dt></dt>');
             var $tweet = $('<dd></dd>');
             if (firstRun || tweet.created_at > latestMsg){
               // regex, remove timezone info
               // 10 chars, paren, capture[ anynotparen ]repeated, paren
-              var re = /.{10}\(([^()]+)\)/g;
+      /**     var re = /.{10}\(([^()]+)\)/g;
               var timestamp = String(tweet.created_at);
-              timestamp = timestamp.replace(re, "");
-              $user.text('@'+tweet.user);
-              $tweet.text('['+timestamp+']' + tweet.message);
-              $user.appendTo($dl);
-              $tweet.appendTo($dl);
-              tempIndex++;
+              timestamp = timestamp.replace(re, ""); **/
+              //$('#tweets dt').attr('data-livestamp',)
               latestMsg=tweet.created_at;
+              $tweet.text('@'+tweet.user + ': ' + tweet.message);
+              $timestamp.appendTo($dl);
+              tempIndex++;
+
+              $('#tweets dt').attr('id', function(i) { //assign id vals to <dt>
+                ($('#tweets #'+(i)).livestamp(streams.home[i].created_at)).append($dt);
+                return (i+1);
+              });
+              $tweet.appendTo($dl);
             };
             index--;
           };
           firstRun = false;
           lastIndex=tempIndex;
-          $('#tweets dl').attr('id', function(i) { //assign id vals to <li>
-            return (i+1);
-          });
+
         }, 1500);
 
         //submit tweets
@@ -127,9 +135,9 @@
           .html("Matched!");
         });
         
-        $('dt','dl#menu').live('click', function(){
-          alert('Click event');    
-        });
+        //$('dt','dl#menu').live('click', function(){
+        //  alert('Click event');    
+        //});
 
       });
 
