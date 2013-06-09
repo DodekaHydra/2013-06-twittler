@@ -36,7 +36,7 @@
       }
 
       /* ul text styling */
-      ul {
+      dl {
         font-family: Verdana, Arial, Helvetica, sans-serif;
         font-size: 12px;
         line-height: 2em;
@@ -77,8 +77,8 @@
 
       $(document).ready(function(){
         var latestMsg = new Date(), newTweets, firstRun=true;
-        var $ul = $('ul');
-        $ul.html('');
+        var $dl = $('dl');
+        $dl.html('');
 
         var lastIndex=-1, tempIndex, index;
         setInterval(function(){
@@ -86,15 +86,18 @@
           while(index > lastIndex){
             tempIndex=lastIndex;
             var tweet = streams.home[index];
-            var $tweet = $('<li></li>');
+            var $user = $('<dt></dt>');
+            var $tweet = $('<dd></dd>');
             if (firstRun || tweet.created_at > latestMsg){
               // regex, remove timezone info
               // 10 chars, paren, capture[ anynotparen ]repeated, paren
               var re = /.{10}\(([^()]+)\)/g;
               var timestamp = String(tweet.created_at);
               timestamp = timestamp.replace(re, "");
-              $tweet.text('['+timestamp+']' + ' @' + tweet.user + ': ' + tweet.message);
-              $tweet.appendTo($ul);
+              $user.text('@'+tweet.user);
+              $tweet.text('['+timestamp+']' + tweet.message);
+              $user.appendTo($dl);
+              $tweet.appendTo($dl);
               tempIndex++;
               latestMsg=tweet.created_at;
             };
@@ -102,7 +105,7 @@
           };
           firstRun = false;
           lastIndex=tempIndex;
-          $('#tweets li').attr('id', function(i) { //assign id vals to <li>
+          $('#tweets dl').attr('id', function(i) { //assign id vals to <li>
             return (i+1);
           });
         }, 1500);
@@ -118,13 +121,13 @@
         });
 
         $(function() {
-          $('li').filter(function(){
+          $('dl').filter(function(){
             return this.id.match(/[0-9]/);
           })
           .html("Matched!");
         });
         
-        $('li','ul#menu').live('click', function(){
+        $('dt','dl#menu').live('click', function(){
           alert('Click event');    
         });
 
@@ -134,7 +137,7 @@
     <h2 style="color:antiquewhite">Mr. Twittles' Twittling Twits</h2>
     <input class="draft" type="text" id="textbox"/> 
     <button class="send" id="sendbutton" >send</button>
-    <ul class="messages" id="tweets" type=none></ul>               
+    <dl class="messages" id="tweets" type=none></dl>               
 
   </body>
 </html>
