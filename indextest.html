@@ -99,7 +99,6 @@
       /**     var re = /.{10}\(([^()]+)\)/g;
               var timestamp = String(tweet.created_at);
               timestamp = timestamp.replace(re, ""); **/
-              //$('#tweets dt').attr('data-livestamp',)
               latestMsg=tweet.created_at;
               $tweet.text('@'+tweet.user + ': ' + tweet.message);
               $timestamp.appendTo($dl);
