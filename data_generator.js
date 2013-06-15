@@ -65,6 +65,6 @@ var writeTweet = function(message){
   var tweet = {};
   tweet.user = visitor;
   tweet.message = message;
-  tweet.created_at = new Date();
+  tweet.created_at = Math.round((new Date()).getTime() / 1000);
   addTweet(tweet);
 };
